@@ -1,10 +1,11 @@
-pub mod ReadFile {
-    use std::io;
+pub mod read_file {
+    use std::fs::File;
+    use std::io::{self, Read};
 
     pub fn read_shader_to_string(path: &str) -> Result<String, io::Error> {
-        match std::fs::read_to_string(path) {
-            Ok(content) => Ok(content),
-            Err(error) => Err(error),
-        }
+        let mut file = File::open(path)?;
+        let mut content = String::new();
+        file.read_to_string(&mut content)?;
+        return Ok(content);
     }
 }
