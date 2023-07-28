@@ -1,7 +1,7 @@
-use glium::{self, implement_vertex, program};
+use glium::{self, implement_vertex, uniforms::UniformType};
 use glium_engine::{
     fs,
-    window::{self, indicies::GIndicies, window::Gwindow},
+    window::{indicies::GIndicies, uniform::UniformOperationType, window::window::Gwindow},
 };
 #[derive(Clone, Copy)]
 struct Vertex {
@@ -24,11 +24,13 @@ fn main() {
     let vs = fs::read_file::read_shader_to_string("glsl/tri_vs.glsl").unwrap();
     let fs = fs::read_file::read_shader_to_string("glsl/tri_fs.glsl").unwrap();
     let w = Gwindow::new("triangle example");
+    let program = glium::Program::from_source(&w.display, &vs, &fs, None).unwrap();
+    let uniform_float_value: f32 = 0.02f32;
     Gwindow::run_no_indicies(
         w,
-        &vs,
-        &fs,
+        program,
         &verticies,
         GIndicies::TrianglesList(glium::index::PrimitiveType::TrianglesList),
+        uniform_float_value,
     );
 }
